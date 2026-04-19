@@ -68,6 +68,15 @@ test('원페이지 핵심 섹션이 순서대로 존재한다', async ({ page })
   await expect(page.locator('#faq .faq-grid article')).toHaveCount(3);
 });
 
+test('FAQ 섹션에 상담 및 결제 관련 안내가 있다', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173');
+
+  const faqSection = page.locator('#faq');
+  await expect(faqSection).toBeVisible();
+  await expect(faqSection.getByRole('heading', { level: 3, name: '상담 신청 후 자료는 언제 받나요?' })).toBeVisible();
+  await expect(faqSection.getByRole('heading', { level: 3, name: '결제 후에는 어떻게 진행되나요?' })).toBeVisible();
+});
+
 const fillConsultationForm = async (page: Page) => {
   await page.getByLabel('성함').fill('홍길동');
   await page.getByLabel('이메일').fill('hong@example.com');
