@@ -114,3 +114,60 @@ test('결제 CTA가 설정된 외부 URL을 가진다', async ({ page }) => {
   await expect(paymentCta).toHaveAttribute('target', '_blank');
   await expect(paymentCta).toHaveAttribute('href', /https?:\/\/.*checkout/i);
 });
+
+test('결제 CTA 클릭 시 추적 이벤트를 기록한다', async ({ page }) => {
+  await page.route('**/assets/config.js', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/javascript',
+      body: "window.APP_CONFIG={consultationFormUrl:'/api/consultation',paymentUrl:'https://payments.example.com/checkout/pro-plan'};",
+    });
+  });
+
+  await page.addInitScript(() => {
+    (window as Window & { gtag?: unknown; dataLayer?: unknown[] }).gtag = undefined;
+    (window as Window & { dataLayer?: unknown[] }).dataLayer = [];
+  });
+
+  await page.goto('http://127.0.0.1:4173');
+  await page.locator('#payment-cta').click();
+
+  const dataLayer = await page.evaluate(() => (window as Window & { dataLayer?: Array<Record<string, unknown>> }).dataLayer || []);
+  expect(dataLayer).toContainEqual(expect.objectContaining({ event: 'click_payment_cta', location: 'pricing' }));
+});
+
+test('상담 CTA 클릭 시 추적 이벤트를 기록한다', async ({ page }) => {
+  await page.addInitScript(() => {
+    (window as Window & { gtag?: unknown; dataLayer?: unknown[] }).gtag = undefined;
+    (window as Window & { dataLayer?: unknown[] }).dataLayer = [];
+  });
+
+  await page.goto('http://127.0.0.1:4173');
+  await page.locator('header .top-cta').click();
+
+  const dataLayer = await page.evaluate(() => (window as Window & { dataLayer?: Array<Record<string, unknown>> }).dataLayer || []);
+  expect(dataLayer).toContainEqual(expect.objectContaining({ event: 'click_consult_cta', location: 'header' }));
+});
+
+test('상담 폼 성공 제출 시 추적 이벤트를 기록한다', async ({ page }) => {
+  await page.route('**/api/consultation', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true }),
+    });
+  });
+
+  await page.addInitScript(() => {
+    (window as Window & { gtag?: unknown; dataLayer?: unknown[] }).gtag = undefined;
+    (window as Window & { dataLayer?: unknown[] }).dataLayer = [];
+  });
+
+  await page.goto('http://127.0.0.1:4173');
+  await fillConsultationForm(page);
+  await page.locator('#consultation-form button[type="submit"]').click();
+  await expect(page.getByText('자료가 이메일로 발송됩니다.', { exact: true })).toBeVisible();
+
+  const dataLayer = await page.evaluate(() => (window as Window & { dataLayer?: Array<Record<string, unknown>> }).dataLayer || []);
+  expect(dataLayer).toContainEqual(expect.objectContaining({ event: 'submit_consult_form_success' }));
+});
