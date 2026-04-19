@@ -539,6 +539,16 @@ section {
   cursor: pointer;
 }
 
+.form-success-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #b8e9df;
+  background: #eafbf7;
+  color: #0c4d42;
+  font-weight: 700;
+}
+
 .faq-grid {
   display: grid;
   gap: 12px;
