@@ -371,8 +371,9 @@ section {
 }
 
 .metric-card p {
-  margin: 8px 0 0;
-  color: var(--muted);
+  margin: 10px 0 0;
+  color: #1f2d49;
+  font-weight: 700;
 }
 
 .modules article {

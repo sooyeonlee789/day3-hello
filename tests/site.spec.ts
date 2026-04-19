@@ -7,6 +7,17 @@ test('히어로에서 상담/결제 CTA가 노출된다', async ({ page }) => {
   await expect(page.getByRole('link', { name: '지금 결제하기' })).toBeVisible();
 });
 
+test('성과 수치 카드 3개가 노출된다', async ({ page }) => {
+  await page.goto('http://127.0.0.1:4173');
+
+  const outcomes = page.locator('#outcomes');
+
+  await expect(outcomes.locator('.metric-card')).toHaveCount(3);
+  await expect(outcomes.getByText('보고서 작성 시간 60% 단축', { exact: true })).toBeVisible();
+  await expect(outcomes.getByText('회의록 정리 시간 50% 단축', { exact: true })).toBeVisible();
+  await expect(outcomes.getByText('반복 메일 작성 시간 70% 단축', { exact: true })).toBeVisible();
+});
+
 test('원페이지 핵심 섹션이 순서대로 존재한다', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173');
 
