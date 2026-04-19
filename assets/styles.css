@@ -549,6 +549,16 @@ section {
   font-weight: 700;
 }
 
+.form-error-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #f2c6cb;
+  background: #fff1f3;
+  color: #7d1020;
+  font-weight: 700;
+}
+
 .faq-grid {
   display: grid;
   gap: 12px;

@@ -5,6 +5,7 @@
   }
 
   const successMessage = document.getElementById('consultation-success-message');
+  const errorMessage = document.getElementById('consultation-error-message');
   const submitButton = form.querySelector('button[type="submit"]');
   const config = window.APP_CONFIG || {};
   const consultationFormUrl = config.consultationFormUrl || '/api/consultation';
@@ -29,6 +30,9 @@
     if (successMessage) {
       successMessage.hidden = true;
     }
+    if (errorMessage) {
+      errorMessage.hidden = true;
+    }
 
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
@@ -52,6 +56,9 @@
       }
     } catch (error) {
       console.error(error);
+      if (errorMessage) {
+        errorMessage.hidden = false;
+      }
     } finally {
       if (submitButton) {
         submitButton.disabled = false;

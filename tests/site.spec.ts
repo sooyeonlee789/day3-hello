@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 test('히어로에서 상담/결제 CTA가 노출된다', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173');
@@ -49,6 +49,16 @@ test('원페이지 핵심 섹션이 순서대로 존재한다', async ({ page })
   await expect(page.locator('#faq .faq-grid article')).toHaveCount(3);
 });
 
+const fillConsultationForm = async (page: Page) => {
+  await page.getByLabel('성함').fill('홍길동');
+  await page.getByLabel('이메일').fill('hong@example.com');
+  await page.getByLabel('연락처').fill('010-1234-5678');
+  await page.getByLabel('역할/현재 직무').fill('마케팅 매니저');
+  await page.getByLabel('자동화하고 싶은 주제').fill('보고서 자동화');
+  await page.getByLabel('상세 문의 내용').fill('주간 보고서 자동화를 도입하고 싶습니다.');
+  await page.getByRole('checkbox', { name: '개인정보 수집 및 이용에 동의합니다. (상담 진행 목적 외 사용하지 않습니다.)' }).check();
+};
+
 test('상담 폼 제출 성공 메시지를 표시한다', async ({ page }) => {
   await page.route('**/api/consultation', async (route) => {
     await route.fulfill({
@@ -60,15 +70,28 @@ test('상담 폼 제출 성공 메시지를 표시한다', async ({ page }) => {
 
   await page.goto('http://127.0.0.1:4173');
 
-  await page.getByLabel('성함').fill('홍길동');
-  await page.getByLabel('이메일').fill('hong@example.com');
-  await page.getByLabel('연락처').fill('010-1234-5678');
-  await page.getByLabel('역할/현재 직무').fill('마케팅 매니저');
-  await page.getByLabel('자동화하고 싶은 주제').fill('보고서 자동화');
-  await page.getByLabel('상세 문의 내용').fill('주간 보고서 자동화를 도입하고 싶습니다.');
-  await page.getByRole('checkbox', { name: '개인정보 수집 및 이용에 동의합니다. (상담 진행 목적 외 사용하지 않습니다.)' }).check();
+  await fillConsultationForm(page);
 
   await page.locator('#consultation-form button[type="submit"]').click();
 
   await expect(page.getByText('자료가 이메일로 발송됩니다.', { exact: true })).toBeVisible();
+});
+
+test('상담 폼 제출 실패 시 오류 메시지를 표시한다', async ({ page }) => {
+  await page.route('**/api/consultation', async (route) => {
+    await route.fulfill({
+      status: 500,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: false }),
+    });
+  });
+
+  await page.goto('http://127.0.0.1:4173');
+
+  await fillConsultationForm(page);
+
+  await page.locator('#consultation-form button[type="submit"]').click();
+
+  await expect(page.getByText('요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', { exact: true })).toBeVisible();
+  await expect(page.getByText('자료가 이메일로 발송됩니다.', { exact: true })).toBeHidden();
 });
