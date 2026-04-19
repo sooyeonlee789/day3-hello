@@ -28,4 +28,12 @@ test('원페이지 핵심 섹션이 순서대로 존재한다', async ({ page })
     expect(currentIndex).toBeGreaterThan(previousIndex);
     previousIndex = currentIndex;
   }
+
+  await expect(page.locator('header.site-header .brand')).toBeVisible();
+  await expect(page.locator('#outcomes .metric-card')).toHaveCount(3);
+  await expect(page.locator('#program .modules article')).toHaveCount(4);
+  await expect(page.locator('#curriculum .curriculum-grid article')).toHaveCount(4);
+  await expect(page.locator('#pricing .pricing-wrap')).toBeVisible();
+  await expect(page.locator('#consult-form .consult-form')).toBeVisible();
+  await expect(page.locator('#faq .faq-grid article')).toHaveCount(3);
 });
