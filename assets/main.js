@@ -29,11 +29,13 @@
     });
   });
 
-  const paymentLink = document.getElementById('payment-cta') || document.querySelector('[data-payment-link]');
-  if (paymentLink && paymentUrl) {
-    paymentLink.setAttribute('href', paymentUrl);
-    paymentLink.setAttribute('target', '_blank');
-    paymentLink.setAttribute('rel', 'noopener');
+  const paymentLinks = document.querySelectorAll('#payment-cta, [data-payment-link]');
+  if (paymentUrl) {
+    paymentLinks.forEach((paymentLink) => {
+      paymentLink.setAttribute('href', paymentUrl);
+      paymentLink.setAttribute('target', '_blank');
+      paymentLink.setAttribute('rel', 'noopener');
+    });
   }
 
   const form = document.getElementById('consultation-form');

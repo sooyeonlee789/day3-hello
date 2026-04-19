@@ -142,7 +142,7 @@ test('상담 폼 제출 실패 시 오류 메시지를 표시한다', async ({ p
   await expect(page.getByText('자료가 이메일로 발송됩니다.', { exact: true })).toBeHidden();
 });
 
-test('결제 CTA가 설정된 외부 URL을 가진다', async ({ page }) => {
+test('결제 CTA들이 설정된 외부 URL을 가진다', async ({ page }) => {
   await page.route('**/assets/config.js', async (route) => {
     await route.fulfill({
       status: 200,
@@ -153,12 +153,17 @@ test('결제 CTA가 설정된 외부 URL을 가진다', async ({ page }) => {
 
   await page.goto('http://127.0.0.1:4173');
 
-  const paymentCta = page.locator('#payment-cta');
+  const heroPaymentCta = page.getByRole('link', { name: '지금 결제하기' });
+  const pricingPaymentCta = page.locator('#payment-cta');
 
-  await expect(paymentCta).toBeVisible();
-  await expect(paymentCta).toHaveAttribute('href', 'https://payments.example.com/checkout/pro-plan');
-  await expect(paymentCta).toHaveAttribute('target', '_blank');
-  await expect(paymentCta).toHaveAttribute('href', /https?:\/\/.*checkout/i);
+  await expect(heroPaymentCta).toBeVisible();
+  await expect(heroPaymentCta).toHaveAttribute('href', 'https://payments.example.com/checkout/pro-plan');
+  await expect(heroPaymentCta).toHaveAttribute('target', '_blank');
+
+  await expect(pricingPaymentCta).toBeVisible();
+  await expect(pricingPaymentCta).toHaveAttribute('href', 'https://payments.example.com/checkout/pro-plan');
+  await expect(pricingPaymentCta).toHaveAttribute('target', '_blank');
+  await expect(pricingPaymentCta).toHaveAttribute('href', /https?:\/\/.*checkout/i);
 });
 
 test('결제 CTA 클릭 시 추적 이벤트를 기록한다', async ({ page }) => {
@@ -176,10 +181,12 @@ test('결제 CTA 클릭 시 추적 이벤트를 기록한다', async ({ page }) 
   });
 
   await page.goto('http://127.0.0.1:4173');
-  await page.locator('#payment-cta').click();
+  await page.locator('#payment-cta').dispatchEvent('click');
+  await page.locator('.hero-actions [data-track="payment-cta"]').dispatchEvent('click');
 
   const dataLayer = await page.evaluate(() => (window as Window & { dataLayer?: Array<Record<string, unknown>> }).dataLayer || []);
   expect(dataLayer).toContainEqual(expect.objectContaining({ event: 'click_payment_cta', location: 'pricing' }));
+  expect(dataLayer).toContainEqual(expect.objectContaining({ event: 'click_payment_cta', location: 'hero' }));
 });
 
 test('상담 CTA 클릭 시 추적 이벤트를 기록한다', async ({ page }) => {

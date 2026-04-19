@@ -42,7 +42,15 @@
           </p>
           <div class="hero-actions">
             <button type="button" onclick="window.location.href='#consult-form'" data-track="consult-cta" data-track-location="hero">무료 상담 신청</button>
-            <a href="#pricing">지금 결제하기</a>
+            <a
+              data-track="payment-cta"
+              data-track-location="hero"
+              data-payment-link
+              href="https://example-payments.test/checkout"
+              target="_blank"
+              rel="noopener"
+              >지금 결제하기</a
+            >
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
