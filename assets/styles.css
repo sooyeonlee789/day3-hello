@@ -1,32 +1,124 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
-  color: #111;
+  color: #111827;
+  background: #f7f9fc;
+  line-height: 1.5;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid #e5e7eb;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.site-header nav {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+}
+
+.site-header a {
+  color: #1f2937;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 .hero {
-  padding: 64px 24px;
+  padding: 72px 24px;
   text-align: center;
   display: grid;
   gap: 16px;
   justify-items: center;
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, #001a48, #12377e);
+}
+
+.hero p {
+  margin: 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero button,
-.hero a {
+.hero a,
+#consult-form button {
   font: inherit;
   padding: 12px 18px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
 }
 
 .hero button {
   border: none;
-  background: #111827;
-  color: #fff;
+  background: #68fadd;
+  color: #003026;
+  font-weight: 700;
 }
 
 .hero a {
-  border: 1px solid #111827;
-  color: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+section {
+  margin-top: 28px;
+  padding: 28px 24px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+#consult-form form {
+  display: grid;
+  gap: 12px;
+}
+
+#consult-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+#consult-form input,
+#consult-form textarea {
+  width: 100%;
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+}
+
+#consult-form button {
+  border: none;
+  background: #111827;
+  color: #fff;
 }
