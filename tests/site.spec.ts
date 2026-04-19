@@ -23,10 +23,14 @@ test('모바일 뷰포트에서 핵심 CTA가 보인다', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173');
 
   const headerConsultCta = page.locator('header .top-cta');
+  const firstHeaderNavLink = page.locator('header .primary-nav a').first();
   const heroConsultCta = page.getByRole('button', { name: '무료 상담 신청' });
   const heroPaymentCta = page.getByRole('link', { name: '지금 결제하기' });
 
   await expect(headerConsultCta).toBeVisible();
+  await expect(headerConsultCta).toBeInViewport();
+  await expect(firstHeaderNavLink).toBeVisible();
+  await expect(firstHeaderNavLink).toHaveAttribute('href', /^#/);
   await expect(heroConsultCta).toBeVisible();
   await expect(heroPaymentCta).toBeVisible();
   await expect(heroConsultCta).toBeInViewport();

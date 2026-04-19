@@ -678,6 +678,8 @@ section {
 @media (max-width: 760px) {
   .header-inner {
     padding: 12px 14px;
+    flex-wrap: wrap;
+    row-gap: 10px;
   }
 
   main {
@@ -697,12 +699,28 @@ section {
   }
 
   .primary-nav {
-    display: none;
+    order: 3;
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    gap: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .primary-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
   }
 
   .top-cta {
-    display: inline-block;
-    padding: 9px 12px;
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.2;
   }
 }
