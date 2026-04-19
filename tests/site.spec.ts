@@ -95,3 +95,22 @@ test('상담 폼 제출 실패 시 오류 메시지를 표시한다', async ({ p
   await expect(page.getByText('요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', { exact: true })).toBeVisible();
   await expect(page.getByText('자료가 이메일로 발송됩니다.', { exact: true })).toBeHidden();
 });
+
+test('결제 CTA가 설정된 외부 URL을 가진다', async ({ page }) => {
+  await page.route('**/assets/config.js', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/javascript',
+      body: "window.APP_CONFIG={consultationFormUrl:'/api/consultation',paymentUrl:'https://payments.example.com/checkout/pro-plan'};",
+    });
+  });
+
+  await page.goto('http://127.0.0.1:4173');
+
+  const paymentCta = page.locator('#payment-cta');
+
+  await expect(paymentCta).toBeVisible();
+  await expect(paymentCta).toHaveAttribute('href', 'https://payments.example.com/checkout/pro-plan');
+  await expect(paymentCta).toHaveAttribute('target', '_blank');
+  await expect(paymentCta).toHaveAttribute('href', /https?:\/\/.*checkout/i);
+});
