@@ -46,14 +46,21 @@
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <div class="visual-card">
-            <p class="label">자동화 기대 효과</p>
-            <h3>주 15시간 절감</h3>
-            <ul>
-              <li>보고서 템플릿 자동 생성</li>
-              <li>반복 이메일/메시지 자동화</li>
-              <li>데이터 요약 및 인사이트 추출</li>
-            </ul>
+          <div class="visual-frame">
+            <div class="visual-screen">
+              <span class="chip">업무 자동화 대시보드</span>
+              <h3>반복 업무를 한 화면에서 실행</h3>
+              <p>보고서 생성, 문의 분류, 데이터 요약까지 AI 워크플로우로 연결합니다.</p>
+            </div>
+            <div class="visual-overlay">
+              <p class="label">자동화 기대 효과</p>
+              <strong>주 15시간 절감</strong>
+              <ul>
+                <li>보고서 템플릿 자동 생성</li>
+                <li>반복 이메일/메시지 자동화</li>
+                <li>데이터 요약 및 인사이트 추출</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
@@ -168,7 +175,7 @@
             <p class="before">정가 1,200,000원</p>
             <p class="price">590,000원</p>
             <p class="desc">결제 즉시 자료 접근 및 첫 모듈 수강 가능</p>
-            <a href="#">결제 페이지 이동</a>
+            <a href="https://example-payments.test/checkout" target="_blank" rel="noopener">결제 페이지 이동</a>
           </div>
         </div>
       </section>
@@ -182,20 +189,34 @@
           <div class="field-grid">
             <label>
               성함
-              <input type="text" name="name" placeholder="홍길동" />
+              <input type="text" name="name" placeholder="홍길동" required />
             </label>
             <label>
               이메일
-              <input type="email" name="email" placeholder="example@email.com" />
+              <input type="email" name="email" placeholder="example@email.com" required />
+            </label>
+          </div>
+          <div class="field-grid">
+            <label>
+              연락처
+              <input type="tel" name="phone" placeholder="010-0000-0000" required />
+            </label>
+            <label>
+              역할/현재 직무
+              <input type="text" name="role" placeholder="예: 마케팅 매니저" required />
             </label>
           </div>
           <label>
-            현재 직무
-            <input type="text" name="role" placeholder="예: 마케팅, 인사, 재무" />
+            자동화하고 싶은 주제
+            <input type="text" name="topic" placeholder="예: 보고서 자동화, 고객문의 분류" required />
           </label>
           <label>
-            자동화하고 싶은 업무
-            <textarea name="goal" rows="4" placeholder="예: 주간 보고서 자동화"></textarea>
+            상세 문의 내용
+            <textarea name="inquiry" rows="5" placeholder="현재 업무 흐름과 자동화 목표를 자세히 적어주세요." required></textarea>
+          </label>
+          <label class="consent-field">
+            <input type="checkbox" name="privacy-consent" required />
+            <span>개인정보 수집 및 이용에 동의합니다. (상담 진행 목적 외 사용하지 않습니다.)</span>
           </label>
           <button type="submit">상담 신청 보내기</button>
         </form>
@@ -221,5 +242,32 @@
         </div>
       </section>
     </main>
+
+    <footer class="site-footer" aria-label="사이트 푸터">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h3>Luminary AI</h3>
+          <p>
+            비개발 직군을 위한 AI 자동화 실무 교육<br />
+            대표자: 김루미 | 사업자번호: 123-45-67890<br />
+            서울특별시 강남구 테헤란로 루미너리 타워
+          </p>
+          <small>© 2026 Luminary AI. All rights reserved.</small>
+        </div>
+        <div class="footer-links">
+          <div>
+            <h4>Company</h4>
+            <a href="#consult-form">Contact</a>
+            <a href="#program">About Us</a>
+          </div>
+          <div>
+            <h4>Legal</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Refund Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
