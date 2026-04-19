@@ -157,6 +157,15 @@ section {
   padding: 12px 20px;
 }
 
+.top-cta:focus-visible,
+.hero button:focus-visible,
+.hero a:focus-visible,
+.pricing-cta a:focus-visible,
+.consult-form button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .hero button {
   border: none;
   background: var(--accent);
@@ -688,10 +697,12 @@ section {
   }
 
   .primary-nav {
-    justify-content: flex-start;
+    display: none;
   }
 
   .top-cta {
-    display: none;
+    display: inline-block;
+    padding: 9px 12px;
+    font-size: 12px;
   }
 }

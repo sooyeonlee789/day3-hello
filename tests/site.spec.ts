@@ -18,6 +18,21 @@ test('성과 수치 카드 3개가 노출된다', async ({ page }) => {
   await expect(outcomes.getByText('반복 메일 작성 시간 70% 단축', { exact: true })).toBeVisible();
 });
 
+test('모바일 뷰포트에서 핵심 CTA가 보인다', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('http://127.0.0.1:4173');
+
+  const headerConsultCta = page.locator('header .top-cta');
+  const heroConsultCta = page.getByRole('button', { name: '무료 상담 신청' });
+  const heroPaymentCta = page.getByRole('link', { name: '지금 결제하기' });
+
+  await expect(headerConsultCta).toBeVisible();
+  await expect(heroConsultCta).toBeVisible();
+  await expect(heroPaymentCta).toBeVisible();
+  await expect(heroConsultCta).toBeInViewport();
+  await expect(heroPaymentCta).toBeInViewport();
+});
+
 test('원페이지 핵심 섹션이 순서대로 존재한다', async ({ page }) => {
   await page.goto('http://127.0.0.1:4173');
 
