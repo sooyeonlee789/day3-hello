@@ -73,8 +73,26 @@ test('FAQ 섹션에 상담 및 결제 관련 안내가 있다', async ({ page })
 
   const faqSection = page.locator('#faq');
   await expect(faqSection).toBeVisible();
-  await expect(faqSection.getByRole('heading', { level: 3, name: '상담 신청 후 자료는 언제 받나요?' })).toBeVisible();
-  await expect(faqSection.getByRole('heading', { level: 3, name: '결제 후에는 어떻게 진행되나요?' })).toBeVisible();
+
+  const consultationFaq = faqSection.locator('article').filter({
+    has: page.getByRole('heading', { level: 3, name: '상담 신청 후 자료는 언제 받나요?' }),
+  });
+  await expect(consultationFaq.getByRole('heading', { level: 3, name: '상담 신청 후 자료는 언제 받나요?' })).toBeVisible();
+  await expect(
+    consultationFaq.getByText('상담 신청 완료 후 영업일 기준 24시간 이내에 안내 자료와 사전 진단 설문 링크를 이메일로 보내드립니다.', {
+      exact: true,
+    }),
+  ).toBeVisible();
+
+  const paymentFaq = faqSection.locator('article').filter({
+    has: page.getByRole('heading', { level: 3, name: '결제 후에는 어떻게 진행되나요?' }),
+  });
+  await expect(paymentFaq.getByRole('heading', { level: 3, name: '결제 후에는 어떻게 진행되나요?' })).toBeVisible();
+  await expect(
+    paymentFaq.getByText('결제 완료 즉시 등록 안내가 발송되며, 첫 모듈 수강 안내와 오리엔테이션 일정이 순차적으로 제공됩니다.', {
+      exact: true,
+    }),
+  ).toBeVisible();
 });
 
 const fillConsultationForm = async (page: Page) => {
